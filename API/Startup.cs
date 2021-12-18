@@ -38,6 +38,16 @@ namespace API
 
 
             services.AddControllers();
+            // add cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
+
+            // add swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -57,6 +67,9 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // add cors
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
